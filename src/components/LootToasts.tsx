@@ -30,7 +30,7 @@ function glimmerAmount(text: string): number | null {
   const m = text.match(/\+(\d[\d,]*)\s*Glimmer/i);
   if (!m) return null;
   const n = Number(m[1].replace(/,/g, ''));
-  return Number.isFinite(n) && n > 0 ? n : null;
+  return Number.isFinite(n) && n > 0 ? n : 0;
 }
 
 function isItemToast(e: LogEntry): boolean {
