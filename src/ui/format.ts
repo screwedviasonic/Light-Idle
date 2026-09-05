@@ -93,15 +93,16 @@ export function slotChaseCopy(game: GameState, slot: EquipSlot, item: Item | und
   if (!item) return null;
   if (item.rarity !== 'common' && item.rarity !== 'uncommon') return null;
   let best: { name: string; dest: string; pct: number; idx: number } | null = null;
-  PATTERN_DEFS.forEach((p, idx) => {
+  for (let idx = 0; idx < PATTERN_DEFS.length; idx++) {
+    const p = PATTERN_DEFS[idx];
     const gun = TEMPLATE_MAP[p.templateId];
-    if (!gun || gun.slot !== slot) return;
-    if (game.patterns[p.templateId]?.finished) return;
+    if (!gun || gun.slot !== slot) continue;
+    if (game.patterns[p.templateId]?.finished) continue;
     const pct = patternPct(game, p.templateId);
     const dest = DEST_META[p.destination]?.label ?? p.destination;
     if (!best || pct > best.pct || (pct === best.pct && idx < best.idx)) {
       best = { name: gun.name, dest, pct, idx };
     }
-  });
+  }
   return best ? `${best.name} · ${best.dest}` : null;
 }
